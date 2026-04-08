@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Voice Interview</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("JYIxTjBvwou3AHFET");
+        })();
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black:wght@400;700;900&family=Poppins:wght@400;500;600;700&display=swap');
+
+        /* Design System: CSS Variables */
+        :root {
+            --chartreuse-primary: #D6FF84;
+            --chartreuse-dark: #c5ee6a;
+            --teal-primary: #033D35;
+            --teal-light: #0d5a52;
+            --cream-bg: #FAF5EF;
+            --purple-accent: #EAD3FF;
+            --black-text: #1a1a1a;
+            --gray-light: #f3f1ed;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--cream-bg);
+            color: var(--black-text);
+            line-height: 1.6;
+        }
+
+        /* Typography System */
+        .headline-display {
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 900;
+            font-size: 3.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .headline-xl {
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 900;
+            font-size: 2.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .headline-lg {
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .headline-md {
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .text-bold {
+            font-weight: 600;
+        }
+
+        .text-italic {
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        /* Layout: Asymmetric Grid */
+        .interview-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-card {
+            animation: fadeInUp 0.5s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Asymmetric Section Headers */
+        .section-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-header__title {
+            grid-column: 1;
+            background-color: var(--teal-primary);
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header__title h1 {
+            color: var(--chartreuse-primary);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .section-header__accent {
+            grid-column: 2;
+            background-color: var(--chartreuse-primary);
+            padding: 2rem;
+            position: relative;
+            transform: translateY(20px);
+        }
+
+        .section-header__accent p {
+            color: var(--teal-primary);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Chat-like Interview Area */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chat-message {
+            animation: slideIn 0.4s ease-out;
+            max-width: 90%;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .chat-message--question {
+            margin-right: auto;
+            padding: 1.25rem 1.5rem;
+            background-color: var(--teal-primary);
+            color: var(--cream-bg);
+            border-radius: 0 12px 12px 12px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .chat-message--answer {
+            margin-left: auto;
+            padding: 1.25rem 1.5rem;
+            background-color: var(--chartreuse-primary);
+            color: var(--teal-primary);
+            border-radius: 12px 0 12px 12px;
+            font-weight: 500;
+            line-height: 1.5;
+            border-left: 4px solid var(--teal-primary);
+        }
+
+        .chat-message--skipped {
+            margin-left: auto;
+            padding: 1.25rem 1.5rem;
+            background-color: var(--gray-light);
+            color: var(--black-text);
+            border-radius: 12px 0 12px 12px;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        /* Input Area */
+        .input-frame {
+            background-color: var(--chartreuse-primary);
+            border: 3px solid var(--teal-primary);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-frame label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--teal-primary);
+            font-size: 0.95rem;
+        }
+
+        .input-frame input,
+        .input-frame textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--teal-primary);
+            background-color: white;
+            color: var(--black-text);
+            font-family: 'Poppins', sans-serif;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: var(--transition);
+            resize: vertical;
+        }
+
+        .input-frame input:focus,
+        .input-frame textarea:focus {
+            outline: none;
+            border-color: var(--teal-primary);
+            background-color: #fafaf8;
+            box-shadow: 0 0 0 3px rgba(3, 61, 53, 0.1);
+        }
+
+        .input-frame textarea {
+            min-height: 120px;
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background-color: var(--gray-light);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--chartreuse-primary);
+            transition: width 0.5s ease;
+            border-right: 3px solid var(--teal-primary);
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--black-text);
+            margin-top: 0.5rem;
+            text-align: right;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .button-primary {
+            background-color: var(--chartreuse-primary);
+            color: var(--teal-primary);
+            border: none;
+            padding: 1rem 1.75rem;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .button-primary:hover {
+            background-color: var(--chartreuse-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(214, 255, 132, 0.3);
+        }
+
+        .button-secondary {
+            background-color: transparent;
+            color: var(--teal-primary);
+            border: 2px solid var(--teal-primary);
+            padding: 1rem 1.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .button-secondary:hover {
+            background-color: var(--teal-primary);
+            color: var(--cream-bg);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Summary Page */
+        .summary-container {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .summary-card {
+            background-color: white;
+            border-left: 4px solid var(--chartreuse-primary);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .summary-card h3 {
+            color: var(--teal-primary);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .summary-card h2 {
+            color: var(--teal-primary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .summary-item {
+            background-color: var(--purple-accent);
+            padding: 1rem;
+            border-radius: 6px;
+        }
+
+        .summary-item label {
+            font-weight: 600;
+            color: var(--teal-primary);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Slider Styles */
+        .slider-container {
+            margin-bottom: 2rem;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--teal-primary);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right, var(--teal-primary) 0%, var(--chartreuse-primary) 100%);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--teal-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--chartreuse-primary);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: var(--chartreuse-primary);
+            transform: scale(1.15);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--teal-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--chartreuse-primary);
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            background: var(--chartreuse-primary);
+            transform: scale(1.15);
+        }
+
+        /* Audio Recording UI */
+        .audio-controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .audio-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .audio-button--record {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        .audio-button--record:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .audio-button--stop {
+            background-color: #ffa500;
+            color: white;
+        }
+
+        .audio-button--stop:hover {
+            background-color: #ff8c00;
+        }
+
+        .audio-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--teal-primary);
+            font-weight: 500;
+        }
+
+        .audio-indicator--recording {
+            color: #ff6b6b;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .audio-prompt-box {
+            background-color: var(--purple-accent);
+            border-left: 4px solid var(--chartreuse-primary);
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+
+        .audio-prompt-box h3 {
+            color: var(--teal-primary);
+            margin: 0 0 0.75rem 0;
+            font-weight: 700;
+        }
+
+        .audio-prompt-box p {
+            color: var(--black-text);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Branding Header */
+        .header {
+            background-color: var(--teal-primary);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .header-logo {
+            max-width: 200px;
+            height: auto;
+            min-width: 150px;
+        }
+
+        .header-logo svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .header-text {
+            color: var(--chartreuse-primary);
+            font-family: 'Archivo Black', sans-serif;
+            font-weight: 900;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Celebration Screen */
+        .celebration-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--cream-bg) 0%, var(--purple-accent) 100%);
+        }
+
+        .celebration-content {
+            max-width: 600px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .celebration-emoji {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .celebration-title {
+            color: var(--teal-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .celebration-subtitle {
+            color: var(--black-text);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .celebration-highlight {
+            background-color: var(--chartreuse-primary);
+            color: var(--teal-primary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-weight: 700;
+            display: inline-block;
+            margin: 0 0.25rem;
+        }
+
+        .celebration-footer {
+            color: var(--teal-primary);
+            font-size: 0.95rem;
+            margin-top: 2rem;
+            font-weight: 500;
+        }
+
+        .celebration-logo {
+            max-width: 140px;
+            margin-top: 3rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-header {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .section-header__title {
+                grid-column: 1;
+            }
+
+            .section-header__accent {
+                grid-column: 1;
+                transform: none;
+            }
+
+            .chat-message {
+                max-width: 100%;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .headline-display {
+                font-size: 2.5rem;
+            }
+
+            .headline-xl {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Custom hook for Web Speech API
+        const useSpeechRecognition = (setCurrentAnswer) => {
+            const [isRecording, setIsRecording] = useState(false);
+            const recognitionRef = useRef(null);
+
+            useEffect(() => {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (SpeechRecognition) {
+                    recognitionRef.current = new SpeechRecognition();
+                    recognitionRef.current.continuous = true;
+                    recognitionRef.current.interimResults = true;
+                    recognitionRef.current.lang = 'en-US';
+
+                    recognitionRef.current.onresult = (event) => {
+                        let interimTranscript = '';
+                        for (let i = event.resultIndex; i < event.results.length; i++) {
+                            const transcript = event.results[i][0].transcript;
+                            if (event.results[i].isFinal) {
+                                setCurrentAnswer(prev => prev + transcript + ' ');
+                            } else {
+                                interimTranscript += transcript;
+                            }
+                        }
+                    };
+
+                    recognitionRef.current.onerror = (event) => {
+                        console.error('Speech recognition error', event.error);
+                        setIsRecording(false);
+                    };
+
+                    recognitionRef.current.onend = () => {
+                        setIsRecording(false);
+                    };
+                }
+            }, [setCurrentAnswer]);
+
+            const startRecording = () => {
+                if (recognitionRef.current && !isRecording) {
+                    setCurrentAnswer('');
+                    setIsRecording(true);
+                    recognitionRef.current.start();
+                }
+            };
+
+            const stopRecording = () => {
+                if (recognitionRef.current && isRecording) {
+                    recognitionRef.current.stop();
+                    setIsRecording(false);
+                }
+            };
+
+            return { isRecording, startRecording, stopRecording };
+        };
+
+        // Interview sections configuration
+        const INTERVIEW_SECTIONS = {
+            intro: {
+                questions: [
+                    { id: 'welcome', type: 'confirm', text: "We're going to walk through your brand voice together — some open-ended questions about personality and tone, then a quick round of rapid-fire sliders at the end. Should take about 15 minutes. Ready?" },
+                    { id: 'brandName', type: 'input', text: "First things first - what's the brand name we're working on?", key: 'brandName' },
+                    { id: 'clientName', type: 'input', text: "And is this for a client, or your own brand? (You can skip this if it's your own)", key: 'clientName', optional: true }
+                ]
+            },
+            materials: {
+                questions: [
+                    { id: 'materialsIntro', type: 'confirm', text: "Before we dive in, do you have any existing materials we should look at? Brand guidelines, website copy, social posts — anything that shows how the brand currently sounds." },
+                    { id: 'filesUrl', type: 'input', text: "If you have files for reference (past writing, brand guides, etc), please provide the URL to your Google Drive or Dropbox folder here:", key: 'filesUrl', optional: true },
+                    { id: 'links', type: 'links', text: "Drop any links here (website, social profiles, past campaigns):", key: 'links', optional: true },
+                    { id: 'copyExamples', type: 'textarea', text: "And if you want to paste any existing copy examples (headlines, about pages, social captions), throw them here:", key: 'copyExamples', optional: true }
+                ]
+            },
+            audioPrompt: {
+                questions: [
+                    { id: 'audioIntro', type: 'confirm', text: "Next section, you can speak your answers or type — your choice for each question. Speaking can help you think out loud more naturally. Cool?" }
+                ]
+            },
+            hook: {
+                questions: [
+                    { id: 'h1', type: 'textarea', text: "If someone asks what this brand is about at a party and you've got 15 seconds before they're pulled away — what do you say?", key: 'partyPitch', audioEnabled: true },
+                    { id: 'h2', type: 'textarea', text: "If your brand walked into a room, who are they? Give me a 'This, Not That' pairing. Example: Are we Tracee Ellis Ross (polished, effortless) or Aubrey Plaza (dry, detached)?", key: 'thisNotThat', audioEnabled: true },
+                    { id: 'h3', type: 'textarea', text: "If your brand was a neighborhood, which one would it be and why? (e.g., The polished Upper East Side vs. the gritty, creative Brooklyn)", key: 'neighborhood', audioEnabled: true }
+                ]
+            },
+            guardrails: {
+                questions: [
+                    { id: 'g1', type: 'textarea', text: "Who is a brand or public figure everyone in your industry loves, but you secretly find annoying or performative?", key: 'antiRoleModel', audioEnabled: true },
+                    { id: 'g2', type: 'textarea', text: "What are the three most common phrases in your industry that make you feel like you're reading a generic template?", key: 'buzzwordBan', audioEnabled: true },
+                    { id: 'g3', type: 'textarea', text: "When someone finishes reading your content, what is the actual thought in their head? (e.g., 'That makes sense' vs. 'I need to buy this.')", key: 'soWhatTest', audioEnabled: true },
+                    { id: 'g4', type: 'textarea', text: "What makes you close the tab? Be specific about the tone or posturing that feels unearned.", key: 'cringeList', audioEnabled: true }
+                ]
+            },
+            mechanics: {
+                questions: [
+                    { id: 'm1', type: 'textarea', text: "Are we the 'Expert on the Stage' (lecturing) or the 'Smart Peer at the Bar' (sharing)?", key: 'expertDynamic', audioEnabled: true },
+                    { id: 'm2', type: 'textarea', text: "Do we want short, punchy observations, or do we need space to build a complex argument?", key: 'pacing', audioEnabled: true },
+                    { id: 'm3', type: 'textarea', text: "If I banned you from using exclamation points for a month, how would you signal to a client that you're excited about a project?", key: 'exclamationChallenge', audioEnabled: true },
+                    { id: 'm4', type: 'textarea', text: "Real talk: are we a 'shit happens' brand, a 'darn it' brand, or something in between?", key: 'swearing', audioEnabled: true },
+                    { id: 'm5', type: 'textarea', text: "Which phrases do you use constantly — and which 'industry standard' words should we set on fire?", key: 'vocabularyDrawer', audioEnabled: true }
+                ]
+            },
+            cultural: {
+                questions: [
+                    { id: 'c1', type: 'textarea', text: "Give us 3 brands whose voice you'd steal if you could. What are they doing that works?", key: 'tonalStealing', audioEnabled: false },
+                    { id: 'c2', type: 'textarea', text: "Which publications or creators does your ideal customer already follow? We're looking for tonal alignment, not subject matter.", key: 'culturalFilter', audioEnabled: false },
+                    { id: 'c3', type: 'textarea', text: "Do we want to be 'early, but not first,' or do we prefer the 'timeless and familiar'?", key: 'timing', audioEnabled: true }
+                ]
+            },
+            sliders: {
+                questions: [
+                    { id: 'slidersIntro', type: 'confirm', text: "Almost done. Last section is rapid-fire — we're going to throw personality sliders at you. Don't overthink it. Your gut reaction is usually the right one, and you can always land somewhere in the middle if neither extreme feels right." },
+                    { id: 'sliders', type: 'sliders', sliders: [
+                        { id: 'formality', left: 'Formal', right: 'Casual' },
+                        { id: 'polish', left: 'Polished', right: 'Raw' },
+                        { id: 'tone', left: 'Playful', right: 'Serious' },
+                        { id: 'outlook', left: 'Optimistic', right: 'Realistic' },
+                        { id: 'boldness', left: 'Safe', right: 'Bold' },
+                        { id: 'edge', left: 'Conservative', right: 'Edgy' },
+                        { id: 'style', left: 'Corporate', right: 'Conversational' },
+                        { id: 'expression', left: 'Minimalist', right: 'Expressive' },
+                        { id: 'timeliness', left: 'Timeless', right: 'Trend-driven' },
+                        { id: 'delivery', left: 'Straightforward', right: 'Witty' },
+                        { id: 'directness', left: 'Direct', right: 'Diplomatic' },
+                        { id: 'punctuation', left: 'Rare !', right: 'Lots of !' }
+                    ]}
+                ]
+            },
+            wrapup: {
+                questions: [
+                    { id: 'finalComments', type: 'textarea', text: "Last call — anything you want to clarify, add, or change about your previous answers? This is your chance to refine or expand on anything.", key: 'finalComments', optional: true }
+                ]
+            }
+        };
+
+        function BrandVoiceInterview() {
+            const [currentSection, setCurrentSection] = useState('landing');
+            const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+            const [answers, setAnswers] = useState({});
+            const [currentAnswer, setCurrentAnswer] = useState('');
+            const [conversationHistory, setConversationHistory] = useState([]);
+            const [interviewComplete, setInterviewComplete] = useState(false);
+            const chatEndRef = useRef(null);
+
+            const { isRecording, startRecording, stopRecording } = useSpeechRecognition(setCurrentAnswer);
+
+            useEffect(() => {
+                chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, [conversationHistory, currentQuestionIndex]);
+
+            const getCurrentQuestion = () => {
+                const section = INTERVIEW_SECTIONS[currentSection];
+                if (!section) return null;
+                return section.questions[currentQuestionIndex];
+            };
+
+            const addToHistory = (type, content, key = null) => {
+                setConversationHistory(prev => [...prev, { type, content, key, timestamp: Date.now() }]);
+            };
+
+            const handleAnswer = () => {
+                const question = getCurrentQuestion();
+
+                if (question.type === 'input' || question.type === 'textarea') {
+                    if (!question.optional && !currentAnswer.trim()) return;
+
+                    addToHistory('answer', currentAnswer, question.key);
+
+                    if (question.key === 'brandName' || question.key === 'clientName' || question.key === 'filesUrl' || question.key === 'finalComments') {
+                        setAnswers(prev => ({
+                            ...prev,
+                            [question.key]: currentAnswer
+                        }));
+                    } else {
+                        setAnswers(prev => ({
+                            ...prev,
+                            [currentSection]: {
+                                ...prev[currentSection],
+                                [question.key]: currentAnswer
+                            }
+                        }));
+                    }
+
+                    setCurrentAnswer('');
+                }
+
+                moveToNextQuestion();
+            };
+
+            const handleSkip = () => {
+                const question = getCurrentQuestion();
+                addToHistory('answer', '[Skipped]', question.key);
+                moveToNextQuestion();
+            };
+
+            const moveToNextQuestion = () => {
+                const section = INTERVIEW_SECTIONS[currentSection];
+
+                if (currentQuestionIndex < section.questions.length - 1) {
+                    setCurrentQuestionIndex(prev => prev + 1);
+
+                    const nextQuestion = section.questions[currentQuestionIndex + 1];
+                    if (nextQuestion.type === 'message' || nextQuestion.type === 'sliders') {
+                        addToHistory('question', nextQuestion.text || nextQuestion.id);
+                    } else if (nextQuestion.type === 'confirm') {
+                        addToHistory('question', nextQuestion.text);
+                    } else {
+                        addToHistory('question', nextQuestion.text);
+                    }
+                } else {
+                    moveToNextSection();
+                }
+            };
+
+            const moveToNextSection = () => {
+                const sectionOrder = ['intro', 'materials', 'audioPrompt', 'hook', 'guardrails', 'mechanics', 'cultural', 'sliders', 'wrapup', 'summary'];
+                const currentIndex = sectionOrder.indexOf(currentSection);
+
+                if (currentIndex < sectionOrder.length - 1) {
+                    const nextSection = sectionOrder[currentIndex + 1];
+                    setCurrentSection(nextSection);
+                    setCurrentQuestionIndex(0);
+                    setConversationHistory([]);
+
+                    const firstQuestion = INTERVIEW_SECTIONS[nextSection].questions[0];
+                    if (firstQuestion.type === 'message' || firstQuestion.type === 'sliders' || firstQuestion.type === 'confirm') {
+                        addToHistory('question', firstQuestion.text || firstQuestion.id);
+                    } else {
+                        addToHistory('question', firstQuestion.text);
+                    }
+                }
+            };
+
+            const startInterview = () => {
+                setCurrentSection('intro');
+                setCurrentQuestionIndex(0);
+                setConversationHistory([]);
+                const firstQuestion = INTERVIEW_SECTIONS.intro.questions[0];
+                addToHistory('question', firstQuestion.text);
+            };
+
+            const handleSliderComplete = (sliderValues) => {
+                setAnswers(prev => ({
+                    ...prev,
+                    sliders: sliderValues
+                }));
+                addToHistory('answer', 'Rapid-fire questions completed!');
+                moveToNextSection();
+            };
+
+            const sendEmail = async () => {
+                const guide = generateGuide();
+
+                try {
+                    await emailjs.send('service_brouhaha', 'template_brandvoice', {
+                        to_email: 'angela@thebrouhahacollective.com',
+                        brand_name: answers.brandName || 'Unknown Brand',
+                        guide_content: guide
+                    });
+                    setInterviewComplete(true);
+                } catch (error) {
+                    console.error('Error sending email:', error);
+                    alert('Failed to send email. Please try again.');
+                }
+            };
+
+            const generateGuide = () => {
+                return `
+BRAND VOICE GUIDE
+${answers.brandName || 'Brand Name'}
+${answers.clientName ? `Client: ${answers.clientName}` : ''}
+
+═══════════════════════════════════════
+
+EXISTING MATERIALS
+${answers.filesUrl ? `Files Location: ${answers.filesUrl}` : ''}
+${answers.links && answers.links.some(l => l && l.trim()) ? `\nLinks:\n${answers.links.filter(l => l && l.trim()).map(l => `- ${l}`).join('\n')}` : ''}
+${answers.copyExamples ? `\nCopy Examples:\n${answers.copyExamples}` : ''}
+
+THE HOOK (CONTEXT & PRESENCE)
+${answers.hook ? Object.entries(answers.hook).map(([key, value]) => `${key}: ${value}`).join('\n\n') : ''}
+
+THE GUARDRAILS (CRINGE AUDIT)
+${answers.guardrails ? Object.entries(answers.guardrails).map(([key, value]) => `${key}: ${value}`).join('\n\n') : ''}
+
+THE MECHANICS (LANGUAGE & PERSPECTIVE)
+${answers.mechanics ? Object.entries(answers.mechanics).map(([key, value]) => `${key}: ${value}`).join('\n\n') : ''}
+
+CULTURAL ALIGNMENT (VIBE & TIMING)
+${answers.cultural ? Object.entries(answers.cultural).map(([key, value]) => `${key}: ${value}`).join('\n\n') : ''}
+
+VOICE PERSONALITY
+${answers.sliders ? Object.entries(answers.sliders).map(([key, value]) => `${key}: ${value}/5`).join('\n') : ''}
+
+FINAL NOTES
+${answers.finalComments || 'None'}
+                `;
+            };
+
+            const getProgressPercentage = () => {
+                const sectionOrder = ['intro', 'materials', 'audioPrompt', 'hook', 'guardrails', 'mechanics', 'cultural', 'sliders', 'wrapup'];
+                const currentIndex = sectionOrder.indexOf(currentSection);
+                return Math.round(((currentIndex + 1) / sectionOrder.length) * 100);
+            };
+
+            const renderQuestion = () => {
+                const question = getCurrentQuestion();
+                if (!question) return null;
+
+                if (question.type === 'confirm') {
+                    return (
+                        <div className="button-group">
+                            <button
+                                onClick={() => {
+                                    addToHistory('answer', 'Yes');
+                                    moveToNextQuestion();
+                                }}
+                                className="button-primary"
+                            >
+                                Let's do it!
+                            </button>
+                            <button
+                                onClick={handleSkip}
+                                className="button-secondary"
+                            >
+                                Skip
+                            </button>
+                        </div>
+                    );
+                }
+
+                if (question.type === 'input' || question.type === 'textarea') {
+                    return (
+                        <div>
+                            {question.audioEnabled && (
+                                <div className="audio-controls">
+                                    {!isRecording ? (
+                                        <button onClick={startRecording} className="audio-button audio-button--record">
+                                            <span>🎤</span> Speak Answer
+                                        </button>
+                                    ) : (
+                                        <button onClick={stopRecording} className="audio-button audio-button--stop">
+                                            <span>⏹</span> Stop Recording
+                                        </button>
+                                    )}
+                                    {isRecording && (
+                                        <div className="audio-indicator audio-indicator--recording">
+                                            <span>●</span> Recording...
+                                        </div>
+                                    )}
+                                    {currentAnswer && !isRecording && (
+                                        <div className="audio-indicator">
+                                            ✓ Transcript captured
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            <div className="input-frame" style={{ marginTop: question.audioEnabled ? '1rem' : '0' }}>
+                                {question.type === 'input' ? (
+                                    <input
+                                        type="text"
+                                        value={currentAnswer}
+                                        onChange={(e) => setCurrentAnswer(e.target.value)}
+                                        onKeyPress={(e) => e.key === 'Enter' && handleAnswer()}
+                                        placeholder={question.audioEnabled ? "Or type your answer here..." : "Your answer here..."}
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <textarea
+                                        value={currentAnswer}
+                                        onChange={(e) => setCurrentAnswer(e.target.value)}
+                                        placeholder={question.audioEnabled ? "Or type your answer here..." : "Your answer here..."}
+                                        autoFocus
+                                    />
+                                )}
+                            </div>
+                            <div className="button-group">
+                                <button onClick={handleAnswer} className="button-primary">
+                                    Next
+                                </button>
+                                {question.optional && (
+                                    <button onClick={handleSkip} className="button-secondary">
+                                        Skip
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    );
+                }
+
+                if (question.type === 'links') {
+                    return (
+                        <div>
+                            <div className="input-frame">
+                                <input
+                                    type="text"
+                                    value={currentAnswer}
+                                    onChange={(e) => setCurrentAnswer(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleAnswer()}
+                                    placeholder="Paste link and press Enter to add more..."
+                                />
+                            </div>
+                            <div className="button-group">
+                                <button onClick={handleAnswer} className="button-primary">
+                                    Done adding links
+                                </button>
+                                <button onClick={handleSkip} className="button-secondary">
+                                    Skip
+                                </button>
+                            </div>
+                        </div>
+                    );
+                }
+
+                if (question.type === 'sliders') {
+                    return <SliderComponent sliders={question.sliders} onComplete={handleSliderComplete} />;
+                }
+
+                return null;
+            };
+
+            if (interviewComplete) {
+                return (
+                    <div>
+                        <div className="header">
+                            <div className="header-text">BROUHAHA COLLECTIVE</div>
+                        </div>
+                        <div className="celebration-container">
+                            <div className="celebration-content">
+                                <div className="celebration-emoji">🎉</div>
+                                <h1 className="headline-xl celebration-title">
+                                    You crushed it.
+                                </h1>
+                                <p className="celebration-subtitle">
+                                    Your brand voice guide for <span className="celebration-highlight">{answers.brandName}</span> is on its way to us.
+                                </p>
+                                <p className="celebration-subtitle">
+                                    The Crew at <span className="celebration-highlight">Brou</span> will be in touch shortly to dive deeper and bring your voice to life.
+                                </p>
+                                <div className="celebration-footer">
+                                    Thanks for being rad. We've got it from here.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (currentSection === 'landing') {
+                return (
+                    <div>
+                        <div className="header">
+                            <div className="header-text">BROUHAHA COLLECTIVE</div>
+                        </div>
+                        <div className="interview-container">
+                            <div className="min-h-screen flex flex-col justify-center items-center text-center gap-6 py-12">
+                                <div className="headline-display" style={{ color: 'var(--teal-primary)' }}>
+                                    Brand Voice<br />Interview
+                                </div>
+                                <p className="text-xl max-w-2xl" style={{ color: 'var(--black-text)' }}>
+                                    Let's figure out who your brand really is. In about 30 minutes, we'll go deep on personality, mechanics, and vibe.
+                                </p>
+                                <button onClick={startInterview} className="button-primary" style={{ fontSize: '1.1rem', padding: '1.25rem 2.5rem' }}>
+                                    Start Interview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (currentSection === 'summary') {
+                return (
+                    <div>
+                        <div className="header">
+                            <div className="header-text">BROUHAHA COLLECTIVE</div>
+                        </div>
+                        <div className="interview-container">
+                        <div className="summary-container">
+                            <div style={{ marginBottom: '3rem' }}>
+                                <h1 className="headline-xl" style={{ color: 'var(--teal-primary)', marginBottom: '1rem' }}>
+                                    {answers.brandName || 'Brand'} Voice Guide
+                                </h1>
+                                <p style={{ color: 'var(--black-text)', fontSize: '1.1rem' }}>
+                                    Review your answers below. Looking good? Let's send it over.
+                                </p>
+                            </div>
+
+                            {answers.hook && (
+                                <div className="summary-card">
+                                    <h2>The Hook (Context & Presence)</h2>
+                                    <div className="space-y-2">
+                                        {Object.entries(answers.hook).map(([key, value]) => (
+                                            <div key={key}>
+                                                <label>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
+                                                <p style={{ color: 'var(--black-text)' }}>{value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {answers.guardrails && (
+                                <div className="summary-card">
+                                    <h2>The Guardrails (Cringe Audit)</h2>
+                                    <div className="space-y-2">
+                                        {Object.entries(answers.guardrails).map(([key, value]) => (
+                                            <div key={key}>
+                                                <label>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
+                                                <p style={{ color: 'var(--black-text)' }}>{value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {answers.mechanics && (
+                                <div className="summary-card">
+                                    <h2>The Mechanics (Language & Perspective)</h2>
+                                    <div className="space-y-2">
+                                        {Object.entries(answers.mechanics).map(([key, value]) => (
+                                            <div key={key}>
+                                                <label>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
+                                                <p style={{ color: 'var(--black-text)' }}>{value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {answers.cultural && (
+                                <div className="summary-card">
+                                    <h2>Cultural Alignment (Vibe & Timing)</h2>
+                                    <div className="space-y-2">
+                                        {Object.entries(answers.cultural).map(([key, value]) => (
+                                            <div key={key}>
+                                                <label>{key.replace(/([A-Z])/g, ' $1').trim()}</label>
+                                                <p style={{ color: 'var(--black-text)' }}>{value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {answers.sliders && (
+                                <div className="summary-card">
+                                    <h2>Voice Personality</h2>
+                                    <div className="summary-grid">
+                                        {Object.entries(answers.sliders).map(([key, value]) => (
+                                            <div key={key} className="summary-item">
+                                                <label>{key}</label>
+                                                <div style={{ marginTop: '0.5rem' }}>
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <span key={i} style={{ color: i < value ? 'var(--teal-primary)' : '#ccc', marginRight: '0.25rem', fontSize: '1.5rem' }}>
+                                                            ●
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            <button onClick={sendEmail} className="button-primary w-full" style={{ padding: '1.25rem', fontSize: '1.1rem', marginTop: '2rem' }}>
+                                Send Brand Voice Guide
+                            </button>
+                        </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Interview flow
+            const question = getCurrentQuestion();
+            if (!question) return null;
+
+            return (
+                <div>
+                    <div className="header">
+                        <div className="header-logo">
+                            <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360.47605 102.69362">
+                                <defs><style>{`.cls-1{fill:#d6ff84;}`}</style></defs>
+                                <path className="cls-1" d="M149.08487,90.70342c-.85036-.54666-1.90522-.81088-3.02082-.81088-2.73737,0-4.86733,2.12895-4.86733,4.6436,0,2.57539,2.12996,4.7256,4.86733,4.7256,1.1156,0,2.17046-.26422,3.02082-.8119v3.46827c-.97185.46568-2.0672.66916-3.24353.66916-4.78634,0-8.27284-3.58975-8.27284-8.03089,0-4.41987,3.4865-7.98938,8.27284-7.98938,1.17634,0,2.27169.22271,3.24353.6894v3.44701Z"/>
+                                <path className="cls-1" d="M179.08453,94.55638c0,4.46138-3.68896,8.07138-8.37407,8.07138-4.7256,0-8.39432-3.61-8.39432-8.07138,0-4.44113,3.66872-8.02987,8.39432-8.02987,4.68511,0,8.37407,3.58874,8.37407,8.02987ZM165.94437,94.57663c0,2.61588,2.06922,4.74585,4.76609,4.74585,2.67662,0,4.74585-2.12996,4.74585-4.74585,0-2.63613-2.06922-4.74483-4.74585-4.74483-2.69687,0-4.76609,2.1087-4.76609,4.74483Z"/>
+                                <path className="cls-1" d="M196.24976,87.01344v11.86259h5.11029v3.26479h-8.72029v-15.12738h3.61Z"/>
+                                <path className="cls-1" d="M218.40176,87.01344v11.86259h5.11029v3.26479h-8.72029v-15.12738h3.61Z"/>
+                                <path className="cls-1" d="M236.94174,87.01344h8.76078v3.18381h-5.15078v2.77786h4.62437v2.89934h-4.62437v3.08257h5.31276v3.18381h-8.92276v-15.12738Z"/>
+                                <path className="cls-1" d="M270.5514,90.70342c-.85036-.54666-1.90522-.81088-3.02082-.81088-2.73737,0-4.86733,2.12895-4.86733,4.6436,0,2.57539,2.12996,4.7256,4.86733,4.7256,1.1156,0,2.17046-.26422,3.02082-.8119v3.46827c-.97185.46568-2.0672.66916-3.24353.66916-4.78634,0-8.27284-3.58975-8.27284-8.03089,0-4.41987,3.4865-7.98938,8.27284-7.98938,1.17634,0,2.27169.22271,3.24353.6894v3.44701Z"/>
+                                <path className="cls-1" d="M286.49979,90.25799h-2.88112v-3.24455h9.37021v3.24455h-2.88112v11.88284h-3.60798v-11.88284Z"/>
+                                <path className="cls-1" d="M306.2971,87.01344h3.61v15.12738h-3.61v-15.12738Z"/>
+                                <path className="cls-1" d="M332.64424,102.14083h-3.89346l-5.6772-15.12738h3.89346l3.83272,10.74699,3.83272-10.74699h3.71124l-5.69947,15.12738Z"/>
+                                <path className="cls-1" d="M351.51222,87.01344h8.76078v3.18381h-5.15078v2.77786h4.62234v2.89934h-4.62234v3.08257h5.31276v3.18381h-8.92276v-15.12738Z"/>
+                                <path className="cls-1" d="M31.90032,41.10672c-1.48891-.63223-3.11955-1.1042-4.88984-1.4176,3.70765-.74099,6.64165-2.26483,8.76141-4.61168,3.09685-3.42873,4.64629-8.09217,4.64629-13.99334,0-4.79256-.90384-8.64597-2.7105-11.56024-1.80767-2.91225-4.24178-4.99531-7.30131-6.2502-3.06054-1.25286-6.58207-1.8803-10.56461-1.8803H.04107v77.43544h19.13794c4.79256,0,8.84974-.9573,12.1675-2.87594,3.31878-1.91662,5.7892-4.48085,7.41227-7.68867,1.62106-3.20781,2.4331-6.8393,2.4331-10.89648,0-4.20345-.81204-7.64933-2.4331-10.34268-1.62307-2.69134-3.9099-4.66344-6.85847-5.91832ZM21.44668,16.99162c1.21655,1.3265,1.82482,3.50338,1.82482,6.52659,0,3.39242-.57196,5.882-1.71487,7.46674-1.01455,1.40733-2.50926,2.18614-4.47984,2.34502V15.1088c1.96983.23403,3.43056.8587,4.36989,1.88283ZM21.88851,63.23157c-1.13232,1.10136-2.74133,1.73788-4.81172,1.92532v-18.17175c2.34811.0783,4.06746.76948,5.1436,2.08666,1.14291,1.40115,1.71487,3.68798,1.71487,6.85847,0,3.53969-.68292,5.9738-2.04675,7.30131Z"/>
+                                <path className="cls-1" d="M82.86625,54.21375c-1.4978-2.12221-6.01818-6.00847-8.82048-6.85683-1.53998-.46547-3.39084-.7867-5.53102-.97445,2.30587-.38156,4.41314-1.04506,6.30574-2.01245,3.39141-1.73202,5.9738-4.35072,7.74415-7.8541,1.76934-3.50237,2.65401-7.83494,2.65401-12.9977,0-5.38267-.79287-9.69708-2.37762-12.94323-1.58676-3.24413-3.89074-5.58644-6.91395-7.02491-3.02523-1.43746-6.82215-2.1567-11.3948-2.1567h-20.13257v77.43544h17.03572v-30.31082c1.87444,0,4.09034,1.61727,6.90752,9.46822,3.15341,8.78782,11.10706,29.78306,41.64498,29.78306,11.90548,0,22.10448-5.33022,26.05688-7.61295-4.9032-4.68746-7.15573-12.48009-7.48024-16.78725-19.15711,10.39514-37.36694,2.64979-45.69831-9.15532ZM61.43542,35.57577V15.00036h.66376c1.32751,0,2.4331.35004,3.31878,1.05011.88467.70209,1.52926,1.77035,1.93579,3.20882.40451,1.43746.60827,3.2633.60827,5.47548,0,3.83526-.44284,6.60124-1.32751,8.29694-.88467,1.69671-2.28683,2.54406-4.20345,2.54406h-.99563Z"/>
+                                <path className="cls-1" d="M97.10061,59.59447c3.20781,2.10822,7.50306,3.16072,12.88674,3.16072,5.38267,0,9.67993-1.0525,12.88775-3.16072,3.20781-2.10658,5.54811-5.44017,7.02491-10.00078,1.47378-4.55903,2.21218-10.59216,2.21218-18.09629,0-7.56182-.7384-13.62262-2.21218-18.18323-1.47681-4.55979-3.8171-7.90839-7.02491-10.04415-3.20781-2.13508-7.50508-3.20416-12.88775-3.20416-5.38368,0-9.67893,1.06908-12.88674,3.20416-3.20781,2.13577-5.55012,5.48437-7.02491,10.04415-1.4758,4.56061-2.21218,10.62141-2.21218,18.18323,0,7.50413.73639,13.53726,2.21218,18.09629,1.47479,4.56061,3.8171,7.8942,7.02491,10.00078ZM105.56299,19.5302c.29355-2.67545.77472-4.52158,1.43847-5.53903.66376-1.016,1.65939-1.52478,2.98589-1.52478,1.32751,0,2.32314.50879,2.9869,1.52478.66376,1.01745,1.14291,2.86358,1.43847,5.53903.29355,2.6769.44284,6.66265.44284,11.96084,0,5.24479-.14929,9.20488-.44284,11.88033-.29556,2.67621-.77472,4.5091-1.43847,5.4988-.66376.99034-1.65939,1.48443-2.9869,1.48443-1.3265,0-2.32214-.4941-2.98589-1.48443-.66376-.98971-1.14493-2.8226-1.43847-5.4988-.29556-2.67545-.44284-6.63554-.44284-11.88033,0-5.29819.14728-9.28394.44284-11.96084Z"/>
+                                <path className="cls-1" d="M159.2142,60.90842c0,1.84399-.29556,3.19067-.88467,4.037-.59113.84936-1.51312,1.27203-2.76598,1.27203-1.25488,0-2.17587-.42266-2.76497-1.27203-.59113-.84634-.88568-2.19302-.88568-4.037V1.39337h-16.59288v58.96125c0,5.0165.92099,8.97986,2.76497,11.89212,1.84298,2.91427,4.25893,4.96102,7.24583,6.13923,2.9869,1.17923,6.39747,1.77035,10.23273,1.77035,3.90789,0,7.35679-.59113,10.34369-1.77035,2.9869-1.17822,5.38166-3.24413,7.19035-6.19471,1.80566-2.94857,2.70949-6.89478,2.70949-11.83664V1.39337h-16.59288v59.51505Z"/>
+                                <polygon className="cls-1" points="205.45313 30.48664 197.70999 30.48664 197.70999 1.39337 180.67427 1.39337 180.67427 78.82881 197.70999 78.82881 197.70999 45.97393 205.45313 45.97393 205.45313 78.82881 222.48885 78.82881 222.48885 1.39337 205.45313 1.39337 205.45313 30.48664"/>
+                                <path className="cls-1" d="M233.77269,1.39337l-9.40253,77.43544h17.03572l1.23029-14.60161h8.1288l1.15003,14.60161h17.69947L260.3219,1.39337h-26.54921ZM243.94111,48.73991l2.55389-30.31082h.66275l2.38739,30.31082h-5.60403Z"/>
+                                <polygon className="cls-1" points="296.27363 30.48664 288.53049 30.48664 288.53049 1.39337 271.49478 1.39337 271.49478 78.82881 288.53049 78.82881 288.53049 45.97393 296.27363 45.97393 296.27363 78.82881 313.30935 78.82881 313.30935 1.39337 296.27363 1.39337 296.27363 30.48664"/>
+                                <path className="cls-1" d="M342.7355,78.82881h17.69947L351.1424,1.39337h-26.54921l-9.40253,77.43544h17.03572l1.23029-14.60161h8.1288l1.15003,14.60161ZM334.76161,48.73991l2.55389-30.31082h.66275l2.38739,30.31082h-5.60403Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div className="interview-container">
+                    <div className="progress-wrapper">
+                        <div className="progress-bar">
+                            <div className="progress-fill" style={{ width: `${getProgressPercentage()}%` }} />
+                        </div>
+                        <div className="progress-text">{getProgressPercentage()}% complete</div>
+                    </div>
+
+                    <div className="section-card">
+                        <div className="chat-container">
+                            {conversationHistory.map((msg, idx) => (
+                                <div key={idx} className={`chat-message ${msg.type === 'question' ? 'chat-message--question' : msg.content === '[Skipped]' ? 'chat-message--skipped' : 'chat-message--answer'}`}>
+                                    {msg.content}
+                                </div>
+                            ))}
+                            <div ref={chatEndRef} />
+                        </div>
+
+                        {renderQuestion()}
+                    </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function SliderComponent({ sliders, onComplete }) {
+            const [values, setValues] = useState(
+                sliders.reduce((acc, slider) => ({ ...acc, [slider.id]: 2 }), {})
+            );
+
+            const handleChange = (sliderId, value) => {
+                setValues(prev => ({ ...prev, [sliderId]: value }));
+            };
+
+            return (
+                <div>
+                    <div style={{ marginBottom: '2rem' }}>
+                        {sliders.map(slider => (
+                            <div key={slider.id} className="slider-container">
+                                <label className="text-bold">{slider.id}</label>
+                                <div className="slider-labels">
+                                    <span>{slider.left}</span>
+                                    <span>{slider.right}</span>
+                                </div>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="4"
+                                    value={values[slider.id]}
+                                    onChange={(e) => handleChange(slider.id, parseInt(e.target.value))}
+                                    style={{ width: '100%' }}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
+                    <button onClick={() => onComplete(values)} className="button-primary w-full" style={{ padding: '1rem', fontSize: '1.1rem' }}>
+                        Next Section
+                    </button>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<BrandVoiceInterview />, document.getElementById('root'));
+    </script>
+</body>
+</html>
