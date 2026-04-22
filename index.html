@@ -887,7 +887,7 @@
 
                 try {
                     await emailjs.send('service_brouhaha', 'template_brandvoice', {
-                        to_email: 'angela@thebrouhahacollective.com',
+                        to_email: answers.userEmail || 'no-email@provided.com',
                         brand_name: answers.brandName || 'Unknown Brand',
                         guide_content: guide
                     });
