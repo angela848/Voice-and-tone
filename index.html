@@ -796,7 +796,7 @@
                 const question = getCurrentQuestion();
 
                 if (question.type === 'input' || question.type === 'textarea') {
-                    if (!question.optional && !currentAnswer.trim()) return;
+                    if (!question.optional && !currentAnswer.trim()) return; if (question.key === 'userEmail' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentAnswer.trim())) { alert('Please enter a valid email address.'); return; }
 
                     addToHistory('answer', currentAnswer, question.key);
 
@@ -954,7 +954,7 @@ ${answers.finalComments || 'None'}
                                 Let's do it!
                             </button>
                             <button
-                                onClick={handleSkip}
+                                onClick={handleSkip} style={{display:'none'}}
                                 className="button-secondary"
                             >
                                 Skip
@@ -1013,7 +1013,7 @@ ${answers.finalComments || 'None'}
                                     Next
                                 </button>
                                 {question.optional && (
-                                    <button onClick={handleSkip} className="button-secondary">
+                                    <button onClick={handleSkip} style={{display:'none'}} className="button-secondary">
                                         Skip
                                     </button>
                                 )}
@@ -1038,7 +1038,7 @@ ${answers.finalComments || 'None'}
                                 <button onClick={handleAnswer} className="button-primary">
                                     Done adding links
                                 </button>
-                                <button onClick={handleSkip} className="button-secondary">
+                                <button onClick={handleSkip} style={{display:'none'}} className="button-secondary">
                                     Skip
                                 </button>
                             </div>
@@ -1069,7 +1069,7 @@ ${answers.finalComments || 'None'}
                                     Your brand voice guide for <span className="celebration-highlight">{answers.brandName}</span> is on its way to us.
                                 </p>
                                 <p className="celebration-subtitle">
-                                    The Crew at <span className="celebration-highlight">Brou</span> will be in touch shortly to dive deeper and bring your voice to life.
+                                    The Crew at <span className="celebration-highlight">Brouhaha Collective</span> will be in touch shortly to dive deeper and bring your voice to life.
                                 </p>
                                 <div className="celebration-footer">
                                     Thanks for being rad. We've got it from here.
